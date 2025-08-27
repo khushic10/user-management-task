@@ -40,7 +40,7 @@ export default function SearchInput<T extends FieldValues>({
 						value={field.value ?? ""}
 						onChange={(_, data) => field.onChange(data.value)}
 						onBlur={field.onBlur}
-						error={!!fieldState.error} // shows red border if invalid
+						error={!!fieldState.error}
 					/>
 					{fieldState.error && (
 						<Label basic color="red" pointing>

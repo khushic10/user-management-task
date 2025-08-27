@@ -19,7 +19,6 @@ export function useUsers<TData = User[]>(
 	return useQuery<User[], Error, TData, ["users"]>({
 		queryKey: ["users"],
 		queryFn: fetchUsers,
-		// Inherit staleTime, retry, refetchOnWindowFocus from Provider defaults
 		...options,
 	});
 }

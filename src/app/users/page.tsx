@@ -29,9 +29,9 @@ const schema: yup.ObjectSchema<FormValues> = yup.object({
 		.string()
 		.max(100, "Search is too long")
 		.test("name-or-email", "Enter a valid name or email", (value) => {
-			if (!value) return true; // allow empty
+			if (!value) return true;
 			const isEmail = yup.string().email().isValidSync(value);
-			const isName = /^[a-zA-Z\s]+$/.test(value); // only letters and spaces
+			const isName = /^[a-zA-Z\s]+$/.test(value);
 			return isEmail || isName;
 		})
 		.defined(),
@@ -40,7 +40,6 @@ const schema: yup.ObjectSchema<FormValues> = yup.object({
 export default function UsersPage() {
 	const router = useRouter();
 
-	// use the custom hook
 	const { data, isLoading, isError, isSuccess, error, refetch } = useUsers();
 
 	const [layout, setLayout] = useLocalStorage<"table" | "card">(
@@ -67,7 +66,6 @@ export default function UsersPage() {
 		);
 	}, [data, q]);
 
-	// Simple client-side pagination (bonus)
 	const [page, setPage] = useState(1);
 	const pageSize = 6;
 	const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));

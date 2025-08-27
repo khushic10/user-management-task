@@ -24,7 +24,6 @@ export function useUser<TData = User>(
 		queryFn: () => fetchUser(id),
 		enabled:
 			(options?.enabled ?? true) && Number.isFinite(id) && !Number.isNaN(id),
-		// Inherit defaults from Provider
 		...options,
 	});
 }

@@ -13,11 +13,10 @@ import {
 	Container,
 } from "semantic-ui-react";
 import Link from "next/link";
-import "@/styles/userDetail.css"; // optional CSS for hover/shadows
+import "@/styles/userDetail.css";
 import LoaderSegment from "@/components/Loader";
 
 export default function UserDetail({ id }: { id: number }) {
-	// use the custom hook
 	const { data, isLoading, isError, error, refetch } = useUser(id);
 
 	if (isLoading) {
