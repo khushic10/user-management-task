@@ -1,0 +1,31 @@
+.user-card {
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+	border: none !important;
+	border-radius: 20px;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card:hover {
+	transform: scale(1.03);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15) !important;
+}
+
+.user-header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.user-avatar {
+	margin-right: 1rem !important;
+}
+
+.user-name {
+	font-size: 1.2rem !important;
+	font-weight: bold !important;
+}
+
+.user-email {
+	font-size: 1rem !important;
+	color: gray !important;
+}

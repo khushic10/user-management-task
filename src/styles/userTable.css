@@ -1,0 +1,43 @@
+.user-row {
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.user-row:hover {
+	background: #f1f8ff !important; /* subtle highlight on hover */
+	transform: translateY(-2px);
+	cursor: pointer;
+}
+
+.name-label {
+	margin-right: 0.5rem !important;
+}
+
+.name-text {
+	font-weight: 600;
+}
+
+.website-link {
+	color: #2185d0;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2rem;
+}
+
+.website-link:hover {
+	text-decoration: underline;
+}
+.user-name-cell {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem; /* space between avatar and name */
+}
+
+.user-avatar {
+	border-radius: 50%; /* ensure circular avatar */
+}
+
+.name-text {
+	font-weight: 600;
+	font-size: 1rem;
+}

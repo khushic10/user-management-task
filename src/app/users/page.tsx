@@ -1,53 +1,54 @@
 "use client";
 
 import { useMemo, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUsers } from "@/service/userservice";
+import { useUsers } from "@/hooks/useUsers";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useRouter } from "next/navigation";
 import {
-	Input,
-	Loader,
 	Message,
 	Header,
 	Divider,
 	Pagination,
+	Icon,
+	Grid,
+	Segment,
 } from "semantic-ui-react";
 import LayoutToggle from "@/components/LayoutToggle";
 import UserTable from "@/components/UserTable";
 import UserCardGrid from "@/components/UserCardGrid";
-import type { User } from "@/types/user";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import SearchInput from "@/components/Search";
+import LoaderSegment from "@/components/Loader";
 
 type FormValues = { q?: string };
 
 const schema: yup.ObjectSchema<FormValues> = yup.object({
-	q: yup.string().max(100, "Search is too long").defined(),
+	q: yup
+		.string()
+		.max(100, "Search is too long")
+		.test("name-or-email", "Enter a valid name or email", (value) => {
+			if (!value) return true; // allow empty
+			const isEmail = yup.string().email().isValidSync(value);
+			const isName = /^[a-zA-Z\s]+$/.test(value); // only letters and spaces
+			return isEmail || isName;
+		})
+		.defined(),
 });
 
 export default function UsersPage() {
 	const router = useRouter();
-	const { data, isLoading, isError, isSuccess, error, refetch } = useQuery<
-		User[]
-	>({
-		queryKey: ["users"],
-		queryFn: fetchUsers,
-	});
+
+	// use the custom hook
+	const { data, isLoading, isError, isSuccess, error, refetch } = useUsers();
 
 	const [layout, setLayout] = useLocalStorage<"table" | "card">(
 		"um_layout",
 		"table"
 	);
 
-	const {
-		control,
-		watch,
-		formState: { errors },
-		resetField,
-		setFocus,
-	} = useForm<FormValues>({
+	const { control, watch, setFocus } = useForm<FormValues>({
 		resolver: yupResolver(schema),
 		defaultValues: { q: "" },
 		mode: "onChange",
@@ -81,56 +82,31 @@ export default function UsersPage() {
 
 	return (
 		<div>
-			<Header
-				as="h1"
-				content="Users"
-				subheader="Browse and inspect user profiles"
-			/>
-			<div
-				style={{
-					display: "flex",
-					gap: 12,
-					alignItems: "center",
-					margin: "1rem 0",
-				}}
-			>
-				<Controller
-					name="q"
-					control={control}
-					render={({ field }) => (
-						<Input
+			<Header as="h1" icon textAlign="center" style={{ marginTop: "1rem" }}>
+				<Icon name="users" circular color="blue" />
+				<Header.Content>Users</Header.Content>
+				<Header.Subheader>Browse and inspect user profiles</Header.Subheader>
+			</Header>
+			<Segment raised>
+				<Grid stackable verticalAlign="middle" columns={2}>
+					<Grid.Column width={12}>
+						<SearchInput<FormValues>
+							name="q"
+							control={control}
 							placeholder="Search by name or email..."
-							value={field.value ?? ""}
-							onChange={(_, data) => field.onChange(data.value)}
-							onBlur={field.onBlur}
-							icon={
-								field.value
-									? {
-											name: "close",
-											link: true,
-											onClick: () => {
-												resetField("q");
-												setFocus("q");
-											},
-									  }
-									: "search"
-							}
+							onClear={() => setFocus("q")}
 						/>
+					</Grid.Column>
+
+					{!isLoading && isSuccess && filtered.length > 0 && (
+						<Grid.Column width={4} textAlign="right">
+							<LayoutToggle layout={layout} onChange={setLayout} />
+						</Grid.Column>
 					)}
-				/>
+				</Grid>
+			</Segment>
 
-				<LayoutToggle layout={layout} onChange={setLayout} />
-			</div>
-
-			{errors.q && <Message warning content={errors.q.message} />}
-
-			{isLoading && (
-				<div style={{ minHeight: 120, position: "relative" }}>
-					<Loader active inline="centered">
-						Loading users...
-					</Loader>
-				</div>
-			)}
+			{isLoading && <LoaderSegment message="Loading users..." />}
 
 			{isError && (
 				<Message
@@ -139,12 +115,6 @@ export default function UsersPage() {
 					content={(error as Error)?.message || "Please try again."}
 					onDismiss={() => refetch()}
 				/>
-			)}
-
-			{isSuccess && (
-				<Message positive>
-					Loaded {filtered.length} of {data?.length ?? 0} users.
-				</Message>
 			)}
 
 			{!isLoading && isSuccess && filtered.length === 0 && (
@@ -165,6 +135,7 @@ export default function UsersPage() {
 						siblingRange={1}
 						onPageChange={(_, data) => setPage(Number(data.activePage))}
 					/>
+					<Divider hidden />
 				</>
 			)}
 		</div>

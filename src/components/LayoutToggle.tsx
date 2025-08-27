@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, ButtonGroup } from "semantic-ui-react";
+import { Button, Segment } from "semantic-ui-react";
 
 type Props = {
 	layout: "table" | "card";
@@ -9,19 +9,32 @@ type Props = {
 
 export default function LayoutToggle({ layout, onChange }: Props) {
 	return (
-		<ButtonGroup size="small">
+		<Segment
+			compact
+			style={{
+				display: "inline-flex",
+				padding: "0.25rem",
+				borderRadius: "8px",
+				boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+				background: "#f4f9ff",
+			}}
+		>
 			<Button
 				icon="table"
+				content="Table"
 				active={layout === "table"}
+				color={layout === "table" ? "blue" : undefined}
 				onClick={() => onChange("table")}
-				title="Table view"
+				style={{ borderRadius: "6px 0 0 6px" }}
 			/>
 			<Button
 				icon="grid layout"
+				content="Card"
 				active={layout === "card"}
+				color={layout === "card" ? "blue" : undefined}
 				onClick={() => onChange("card")}
-				title="Card view"
+				style={{ borderRadius: "0 6px 6px 0" }}
 			/>
-		</ButtonGroup>
+		</Segment>
 	);
 }

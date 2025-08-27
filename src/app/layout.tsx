@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Providers from "@/components/providers";
 import "semantic-ui-css/semantic.min.css";
+import "./globals.css";
 
 export const metadata: Metadata = {
 	title: "User Management",
@@ -14,11 +15,16 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body>
+			<body
+				className="home-background"
+				style={{
+					minHeight: "100vh",
+					background: "linear-gradient(135deg, #e0f7fa, #f1f8e9)",
+					padding: "1rem 4rem",
+				}}
+			>
 				<Providers>
-					<div className="ui container" style={{ padding: "2rem 0" }}>
-						{children}
-					</div>
+					<div>{children}</div>
 				</Providers>
 			</body>
 		</html>
