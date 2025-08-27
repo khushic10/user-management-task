@@ -13,7 +13,7 @@ import {
 	Container,
 } from "semantic-ui-react";
 import Link from "next/link";
-import "@/styles/UserDetail.css"; // optional CSS for hover/shadows
+import "@/styles/userDetail.css"; // optional CSS for hover/shadows
 import LoaderSegment from "@/components/Loader";
 
 export default function UserDetail({ id }: { id: number }) {

@@ -2,7 +2,7 @@
 
 import { Table, Image, Icon, Button } from "semantic-ui-react";
 import type { User } from "@/types/user";
-import "@/styles/UserTable.css";
+import "@/styles/userTable.css";
 
 type Props = {
 	users: User[];
