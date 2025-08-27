@@ -21,6 +21,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import SearchInput from "@/components/Search";
 import LoaderSegment from "@/components/Loader";
+import Link from "next/link";
 
 type FormValues = { q?: string };
 
@@ -80,11 +81,36 @@ export default function UsersPage() {
 
 	return (
 		<div>
-			<Header as="h1" icon textAlign="center" style={{ marginTop: "1rem" }}>
-				<Icon name="users" circular color="blue" />
-				<Header.Content>Users</Header.Content>
-				<Header.Subheader>Browse and inspect user profiles</Header.Subheader>
-			</Header>
+			<div
+				style={{ position: "relative", textAlign: "center", marginTop: "1rem" }}
+			>
+				{/* Home icon on the left */}
+				<Link href="/" passHref>
+					<Icon
+						name="home"
+						size="big"
+						link
+						title="Go to Home"
+						style={{
+							position: "absolute",
+							left: 0,
+							top: "50%",
+							transform: "translateY(-50%)",
+						}}
+					/>
+				</Link>
+
+				{/* Centered header */}
+				<Header as="h1" style={{ display: "inline-block" }}>
+					<Icon name="users" circular color="blue" />
+					<Header.Content>
+						Users
+						<Header.Subheader>
+							Browse and inspect user profiles
+						</Header.Subheader>
+					</Header.Content>
+				</Header>
+			</div>
 			<Segment raised>
 				<Grid stackable verticalAlign="middle" columns={2}>
 					<Grid.Column width={12}>
